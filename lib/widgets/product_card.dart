@@ -72,21 +72,6 @@ class ProductCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10,),
-                  // ElevatedButton.icon(
-                  //   onPressed: () {},
-                  //   icon: const Icon(Icons.shopping_cart),
-                  //   label: const Text('Buy'),
-                  //   style: ElevatedButton.styleFrom(
-                  //     backgroundColor: Colors.lightGreenAccent.shade400,
-                  //     foregroundColor: Colors.white,
-                  //     shadowColor: Colors.white,
-                  //     minimumSize: const Size(200, 50),
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(5), // Bo góc 12px (Muốn nút tròn xoe thì tăng lên 30+)
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
