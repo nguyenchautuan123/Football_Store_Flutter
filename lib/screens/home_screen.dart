@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: 4,
                         itemBuilder: (context, index) {
                           return Brand(
-                            anh_thuong_hieu: 'https://authentic-shoes.com/wp-content/uploads/2023/05/nike-sale_92ad40903c8844f3bf9fb9078632d3cd_2048x2048.png',
+                            anh_thuong_hieu: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDuijr8bBrpnUWJ7dQhTxKOARJiTZIix8A0O3IABPVOnmW3QidAfIP1VEF&s=10',
                             ten_thuong_hieu: 'Nike',
                             onTap: (){},
                             onLongPress: (){},

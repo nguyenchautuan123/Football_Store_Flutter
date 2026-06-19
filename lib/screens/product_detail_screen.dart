@@ -103,13 +103,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                   Text(
-                    'Worn at the highest level by adidas athletes including Lamine Yamal, Ousmane Dembélé and Florian Wirtz \n'
-                        'Every aspect of the F50 EVO has been crafted with lightness in mind to deliver a game changing design that enables quicker play and sharper changes of direction throughout the pitch \n '
-                        'Ultra-light F50 SHELL EVO mesh upper engineered to reduce weight and reveal the inside \n'
-                        'F50 CAGE+ features an adaptive TPU structure and a hyper-light midsole system, providing stability and support for fast cuts and agile movement \n'
-                        'FLOATING TONGUE in a featherlight premium material that wraps seamlessly around the foot for optimal lockdown of the heel and foot, reducing slippage in the boot for better control of your movement \n'
-                        'The F50 SPEEDSYSTEM EVO is a super lightweight soleplate with a full-length LX plate and bladed studs designed for fast cuts, while the tooling core adds structural stiffness \n'
-                        'Classic adaptive lacing system for a secure and personalized fit \n'
+                      'Approved by global superstars including Estêvão, Jamal Musiala and Phil FodenBuilt for the mad dribblers, the players who see no defence as too tight, no challenge as too big and no move as too risky, the all-	new Tiempo becomes their ultimate weapon of precision, control and fearlessnessThe buttery soft Techleather upper fits perfectly to your foot like a glove-like fit, offering 17% more coverage than previous 	models for a smoother, more cohesive feel, while being lighter, softer and absorbing 29% less water than natural leather for 	consistent touch and comfort in all conditionsTapered studs provide optimum traction while improving support and durabilityWith a classic adaptive lacing systemThis is a football boot with FG studs for use on natural grass pitches.'
                   ),
                 ],
               ),
