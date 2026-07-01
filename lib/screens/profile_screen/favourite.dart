@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
-class CheckOutScreen extends StatefulWidget {
-  const CheckOutScreen({super.key});
+class Favourite extends StatefulWidget {
+  const Favourite({super.key});
 
   @override
-  State<CheckOutScreen> createState() => _CheckOutScreenState();
+  State<Favourite> createState() => _FavouriteState();
 }
 
-class _CheckOutScreenState extends State<CheckOutScreen> {
+class _FavouriteState extends State<Favourite> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Check out"),
+        title: Text("Favourites"),
         backgroundColor: Colors.lightGreenAccent.shade400,
       ),
       body: Container(

@@ -29,6 +29,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   input_quantity: ^2.5.0
+  image_picker: ^1.1.2
+  shared_preferences: ^2.3.0
   flutter:
     sdk: flutter
 
@@ -61,6 +63,7 @@ flutter:
   assets:
     - assets/
     - assets/slider/
+    - assets/default_avatar/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

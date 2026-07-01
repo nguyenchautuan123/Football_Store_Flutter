@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
-class CheckOutScreen extends StatefulWidget {
-  const CheckOutScreen({super.key});
+class PoliciesAndTerms extends StatefulWidget {
+  const PoliciesAndTerms({super.key});
 
   @override
-  State<CheckOutScreen> createState() => _CheckOutScreenState();
+  State<PoliciesAndTerms> createState() => _PoliciesAndTermsState();
 }
 
-class _CheckOutScreenState extends State<CheckOutScreen> {
+class _PoliciesAndTermsState extends State<PoliciesAndTerms> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Check out"),
+        title: Text("Policies and Terms"),
         backgroundColor: Colors.lightGreenAccent.shade400,
       ),
       body: Container(

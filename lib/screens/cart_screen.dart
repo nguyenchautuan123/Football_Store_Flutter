@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../widgets/cart_item.dart';
 import '../widgets/price_text.dart';
 
+import 'check_out_screen.dart';
+
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
@@ -84,7 +86,11 @@ class _CartScreenState extends State<CartScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 child: ElevatedButton.icon(
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => CheckOutScreen())
+                    );
+                  },
                   icon: const Icon(Icons.check_outlined),
                   label: const Text('Check out'),
                   style: ElevatedButton.styleFrom(
@@ -97,7 +103,8 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                 ),
-              )
+              ),
+
             ],
           ),
         ),
