@@ -1,10 +1,21 @@
 // ĐÂY LÀ TRANG TÌM KIẾM CỦA ỨNG DỤNG\
 
+import 'dart:ui';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/product_card.dart';
 import '../widgets/search_bar.dart';
 import 'product_detail_screen.dart';
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse, // Kích hoạt kéo cuộn bằng chuột
+    PointerDeviceKind.trackpad,
+  };
+}
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -17,6 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(

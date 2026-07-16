@@ -1,5 +1,7 @@
 // ĐÂY LÀ TRANG PROFILE CỦA ỨNG DỤNG
 
+import 'dart:ui';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +16,15 @@ import 'profile_screen/order.dart';
 import 'profile_screen/personal_profile.dart';
 import 'profile_screen/policies_and_terms.dart';
 
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse, // Kích hoạt kéo cuộn bằng chuột
+    PointerDeviceKind.trackpad,
+  };
+}
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -27,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   static const String _avatarKey = 'user_avatar_path';
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _loadSavedAvatar();
   }
@@ -36,9 +47,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final preferences = await SharedPreferences.getInstance();
     final String? imagePath = preferences.getString(_avatarKey);
 
-    if(imagePath != null && imagePath.isNotEmpty){
+    if (imagePath != null && imagePath.isNotEmpty) {
       final savedFile = File(imagePath);
-      if(await savedFile.exists()){
+      if (await savedFile.exists()) {
         setState(() {
           _imageFile = savedFile;
         });
@@ -53,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       imageQuality: 80, // Nén ảnh xuống 80% để giảm dung lượng
     );
 
-    if(pickedFile != null){
+    if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
@@ -69,46 +80,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
       {
         'title': 'Personal profile',
         'icon': Icons.person,
-        'screen': const PersonalProfile()
+        'screen': const PersonalProfile(),
       },
       {
         'title': 'Order',
         'icon': Icons.shopping_cart_checkout,
-        'screen': const Order()
+        'screen': const Order(),
       },
       {
         'title': 'Favourites',
         'icon': Icons.favorite_outlined,
-        'screen': const Favourite()
+        'screen': const Favourite(),
       },
       {
         'title': 'Address',
         'icon': Icons.location_on,
-        'screen': const Address()
+        'screen': const Address(),
       },
-      {
-        'title': 'About us',
-        'icon': Icons.info,
-        'screen': const AboutUs()
-      },
+      {'title': 'About us', 'icon': Icons.info, 'screen': const AboutUs()},
       {
         'title': 'Policies and Terms',
         'icon': Icons.policy,
-        'screen': const PoliciesAndTerms()
+        'screen': const PoliciesAndTerms(),
       },
       {
         'title': 'Address and Contact',
         'icon': Icons.phone,
-        'screen': const AddressAndContact()
+        'screen': const AddressAndContact(),
       },
       {
         'title': 'Change Password',
         'icon': Icons.lock,
-        'screen': const ChangePassword()
+        'screen': const ChangePassword(),
       },
     ];
 
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
@@ -136,7 +144,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             CircleAvatar(
                               radius: 50,
                               // 1. Kiểm tra nếu có ảnh mới thì hiển thị, nếu không dùng ảnh mặc định
-                              backgroundImage: _imageFile != null ? FileImage(_imageFile!) : const AssetImage('assets/default_avatar/default-avatar.png') as ImageProvider,
+                              backgroundImage: _imageFile != null
+                                  ? FileImage(_imageFile!)
+                                  : const AssetImage(
+                                          'assets/default_avatar/default-avatar.png',
+                                        )
+                                        as ImageProvider,
                             ),
                           ],
                         ),
@@ -146,8 +159,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text('Logan Nguyen', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
-                          Text('chautuan1708@gmail.com', style: TextStyle(fontSize: 16),)
+                          Text(
+                            'Logan Nguyen',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'chautuan1708@gmail.com',
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ],
                       ),
                     ),
@@ -160,22 +182,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   shrinkWrap: true, // Giúp danh sách co giãn vừa nội dung
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: menuItems.length,
-                  separatorBuilder: (context, index) => Divider(height: 1, color: Colors.lightGreenAccent.shade400,),
+                  separatorBuilder: (context, index) => Divider(
+                    height: 1,
+                    color: Colors.lightGreenAccent.shade400,
+                  ),
                   itemBuilder: (context, index) {
                     final item = menuItems[index];
                     return ListTile(
-                      leading: Icon(item['icon'], color: Colors.lightGreenAccent.shade400,),
+                      leading: Icon(
+                        item['icon'],
+                        color: Colors.lightGreenAccent.shade400,
+                      ),
                       title: Text(
                         item['title'],
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => item['screen'])
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => item['screen'],
+                          ),
                         );
                       },
                     );
-                  }
+                  },
                 ),
               ),
               Container(

@@ -1,3 +1,5 @@
+import 'dart:ui';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import './screens/home_screen.dart';
@@ -10,6 +12,15 @@ void main() {
   runApp(const MyApp());
 }
 
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse, // Kích hoạt kéo cuộn bằng chuột
+    PointerDeviceKind.trackpad,
+  };
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -18,6 +29,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: MyCustomScrollBehavior(),
+          child: child!,
+        );
+      },
       home: const MainScreen(),
     );
   }
@@ -55,42 +72,22 @@ class _MainScreenState extends State<MainScreen> {
         onTap: _onScreenSelected,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.lightGreenAccent.shade400,
-        selectedIconTheme: const IconThemeData(
-          color: Colors.lightGreenAccent,
-        ),
-        selectedLabelStyle: const TextStyle(
-          color: Colors.lightGreenAccent,
-        ),
+        selectedIconTheme: const IconThemeData(color: Colors.lightGreenAccent),
+        selectedLabelStyle: const TextStyle(color: Colors.lightGreenAccent),
         unselectedItemColor: Colors.grey,
-        unselectedIconTheme: const IconThemeData(
-          color: Colors.grey,
-        ),
-        unselectedLabelStyle: const TextStyle(
-          color: Colors.grey,
-        ),
+        unselectedIconTheme: const IconThemeData(color: Colors.grey),
+        unselectedLabelStyle: const TextStyle(color: Colors.grey),
 
         items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home'
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
           ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: 'Cart'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile'
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
     );
   }
-
 }
-
-

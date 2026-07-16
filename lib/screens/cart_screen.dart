@@ -1,11 +1,22 @@
 // ĐÂY LÀ TRANG GIỎ HÀNG CỦA ỨNG DỤNG
 
+import 'dart:ui';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/cart_item.dart';
 import '../widgets/price_text.dart';
 
 import 'check_out_screen.dart';
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse, // Kích hoạt kéo cuộn bằng chuột
+    PointerDeviceKind.trackpad,
+  };
+}
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -18,6 +29,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
@@ -89,7 +101,7 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           Text('Subtotal', style: TextStyle(fontSize: 18)),
                           PriceText(
-                            amount: 120,
+                            amount: 500,
                             style: TextStyle(fontSize: 18),
                           ),
                         ],
@@ -116,7 +128,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                           PriceText(
-                            amount: 120,
+                            amount: 500,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
