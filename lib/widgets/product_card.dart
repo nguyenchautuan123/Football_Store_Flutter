@@ -27,7 +27,7 @@ class ProductCard extends StatelessWidget {
       onLongPress: onLongPress,
       child: Container(
         width: 180,
-        height: 350,
+        height: 300,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Colors.grey[200],
@@ -57,18 +57,24 @@ class ProductCard extends StatelessWidget {
                   Text(
                     ten_san_pham,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    maxLines: 2,
+                    overflow:
+                        TextOverflow.ellipsis, // Nếu quá dài sẽ hiện dấu '...'
                   ),
                   Text(
                     ma_danh_muc,
-                    style: TextStyle(fontStyle: FontStyle.italic,),
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       Icon(Icons.attach_money),
                       Text(
                         gia_san_pham,
-                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold, ),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
