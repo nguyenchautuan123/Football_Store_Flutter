@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -17,15 +15,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         title: Text("Change Password"),
         backgroundColor: Colors.lightGreenAccent.shade400,
       ),
-      body: Container(
-        child: ListView(
-          children: [
-            Container(
-
-            ),
-          ],
-        ),
-      ),
+      body: Container(child: ListView(children: [Container()])),
     );
   }
 }

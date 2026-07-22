@@ -6,7 +6,6 @@ import './screens/home_screen.dart';
 import './screens/search_screen.dart';
 import './screens/cart_screen.dart';
 import './screens/profile_screen.dart';
-import './screens/product_detail_screen.dart';
 
 void main() {
   runApp(const MyApp());
