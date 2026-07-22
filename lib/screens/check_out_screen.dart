@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
-
 import '../widgets/check_out_address.dart';
 import '../widgets/check_out_item.dart';
 import '../widgets/price_text.dart';

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 
 class Favourite extends StatefulWidget {
   const Favourite({super.key});
@@ -17,15 +15,7 @@ class _FavouriteState extends State<Favourite> {
         title: Text("Favourites"),
         backgroundColor: Colors.lightGreenAccent.shade400,
       ),
-      body: Container(
-        child: ListView(
-          children: [
-            Container(
-
-            ),
-          ],
-        ),
-      ),
+      body: Container(child: ListView(children: [Container()])),
     );
   }
 }

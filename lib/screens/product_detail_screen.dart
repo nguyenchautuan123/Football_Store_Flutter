@@ -1,8 +1,6 @@
 // ĐÂY LÀ TRANG HIỂN THỊ CHI TIẾT SẢN PHẨM
 
 import 'package:flutter/material.dart';
-
-import 'package:input_quantity/input_quantity.dart';
 import '../widgets/shoe_size_picker.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -24,7 +22,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         child: ListView(
           children: [
             Container(
-              child: Image.network('https://thumblr.uniid.it/product/462700/e4d5c6fd4e11.jpg?width=1920&format=webp&q=75'),
+              child: Image.network(
+                'https://thumblr.uniid.it/product/462700/e4d5c6fd4e11.jpg?width=1920&format=webp&q=75',
+              ),
             ),
             Container(
               padding: EdgeInsets.all(10),
@@ -45,17 +45,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: Row(
                 children: [
                   Icon(Icons.attach_money),
-                  Text(
-                    '120',
-                    style: TextStyle(fontSize: 18),
-                  ),
+                  Text('120', style: TextStyle(fontSize: 18)),
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: ShoeSizePicker(),
-            ),
+            Container(padding: EdgeInsets.all(10), child: ShoeSizePicker()),
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(10),
@@ -64,21 +58,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Expanded(
                     flex: 8,
                     child: ElevatedButton.icon(
-                      onPressed: (){},
+                      onPressed: () {},
                       icon: const Icon(Icons.shopping_cart),
                       label: const Text('Add to cart'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.lightGreenAccent.shade400,
-                          foregroundColor: Colors.white,
-                          shadowColor: Colors.white,
-                          minimumSize: const Size(double.infinity, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5), // Bo góc 12px (Muốn nút tròn xoe thì tăng lên 30+)
-                          ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.lightGreenAccent.shade400,
+                        foregroundColor: Colors.white,
+                        shadowColor: Colors.white,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            5,
+                          ), // Bo góc 12px (Muốn nút tròn xoe thì tăng lên 30+)
                         ),
+                      ),
                     ),
                   ),
-                  SizedBox(width: 5,),
+                  SizedBox(width: 5),
                   Expanded(
                     flex: 2,
                     child: IconButton(
@@ -103,7 +99,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                   Text(
-                      'Approved by global superstars including Estêvão, Jamal Musiala and Phil FodenBuilt for the mad dribblers, the players who see no defence as too tight, no challenge as too big and no move as too risky, the all-	new Tiempo becomes their ultimate weapon of precision, control and fearlessnessThe buttery soft Techleather upper fits perfectly to your foot like a glove-like fit, offering 17% more coverage than previous 	models for a smoother, more cohesive feel, while being lighter, softer and absorbing 29% less water than natural leather for 	consistent touch and comfort in all conditionsTapered studs provide optimum traction while improving support and durabilityWith a classic adaptive lacing systemThis is a football boot with FG studs for use on natural grass pitches.'
+                    'Approved by global superstars including Estêvão, Jamal Musiala and Phil FodenBuilt for the mad dribblers, the players who see no defence as too tight, no challenge as too big and no move as too risky, the all-	new Tiempo becomes their ultimate weapon of precision, control and fearlessnessThe buttery soft Techleather upper fits perfectly to your foot like a glove-like fit, offering 17% more coverage than previous 	models for a smoother, more cohesive feel, while being lighter, softer and absorbing 29% less water than natural leather for 	consistent touch and comfort in all conditionsTapered studs provide optimum traction while improving support and durabilityWith a classic adaptive lacing systemThis is a football boot with FG studs for use on natural grass pitches.',
                   ),
                 ],
               ),
