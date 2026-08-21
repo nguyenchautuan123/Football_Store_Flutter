@@ -6,7 +6,7 @@ class ProductCard extends StatelessWidget {
   final String ten_san_pham;
   final String anh_san_pham;
   final String gia_san_pham;
-  final String ma_danh_muc;
+  final String danh_muc;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
@@ -15,7 +15,7 @@ class ProductCard extends StatelessWidget {
     required this.ten_san_pham,
     required this.anh_san_pham,
     required this.gia_san_pham,
-    required this.ma_danh_muc,
+    required this.danh_muc,
     required this.onTap,
     required this.onLongPress,
   });
@@ -61,10 +61,7 @@ class ProductCard extends StatelessWidget {
                     overflow:
                         TextOverflow.ellipsis, // Nếu quá dài sẽ hiện dấu '...'
                   ),
-                  Text(
-                    ma_danh_muc,
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
+                  Text(danh_muc, style: TextStyle(fontStyle: FontStyle.italic)),
                   SizedBox(height: 10),
                   Row(
                     children: [

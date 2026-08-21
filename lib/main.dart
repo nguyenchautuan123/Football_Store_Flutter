@@ -1,5 +1,3 @@
-import 'dart:ui';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import './screens/home_screen.dart';
@@ -11,15 +9,6 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-    PointerDeviceKind.touch,
-    PointerDeviceKind.mouse, // Kích hoạt kéo cuộn bằng chuột
-    PointerDeviceKind.trackpad,
-  };
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -28,12 +17,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      builder: (context, child) {
-        return ScrollConfiguration(
-          behavior: MyCustomScrollBehavior(),
-          child: child!,
-        );
-      },
       home: const MainScreen(),
     );
   }
@@ -64,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screen[_selectedScreen],
+      body: IndexedStack(index: _selectedScreen, children: _screen),
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedScreen,

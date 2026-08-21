@@ -7,13 +7,11 @@ class ProductModel {
   final String? ten_san_pham;
   final String? anh_san_pham;
   final String? mo_ta_san_pham;
-  final int? thuong_hieu;
-  final int? danh_muc;
-  final int? gia_san_pham;
+  final double? gia_san_pham;
 
-  BrandModel? brands_model;
-  CategoryModel? categories_model;
-  List<ProductSizeModel>? sizes_model;
+  BrandModel? thuong_hieu;
+  CategoryModel? danh_muc;
+  List<ProductSizeModel>? sizes;
 
   ProductModel({
     this.ma_san_pham,
@@ -23,26 +21,41 @@ class ProductModel {
     this.thuong_hieu,
     this.danh_muc,
     this.gia_san_pham,
-
-    this.brands_model,
-    this.categories_model,
-    this.sizes_model,
+    this.sizes,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      ma_san_pham: json['ma_san_pham'],
-      ten_san_pham: json['ten_san_pham'],
-      anh_san_pham: json['anh_san_pham'],
-      mo_ta_san_pham: json['mo_ta_san_pham'],
-      thuong_hieu: json['thuong_hieu'],
-      danh_muc: json['danh_muc'],
-      gia_san_pham: json['gia_san_pham'],
+      ma_san_pham: json['ma_san_pham'] ?? 0,
+      ten_san_pham: json['ten_san_pham'] ?? '',
+      anh_san_pham: json['anh_san_pham'] ?? '',
+      mo_ta_san_pham: json['mo_ta_san_pham'] ?? '',
+      thuong_hieu: json['thuong_hieu'] is Map
+          ? BrandModel.fromJson(json['thuong_hieu'])
+          : (json['thuong_hieu'] != null
+                ? BrandModel(
+                    ma_thuong_hieu: 0,
+                    ten_thuong_hieu: json['thuong_hieu'].toString(),
+                    anh_thuong_hieu: '',
+                  )
+                : null),
+      danh_muc: json['danh_muc'] is Map
+          ? CategoryModel.fromJson(json['danh_muc'])
+          : (json['danh_muc'] != null
+                ? CategoryModel(
+                    ma_danh_muc: 0,
+                    ten_danh_muc: json['danh_muc'].toString(),
+                    anh_danh_muc: '',
+                  )
+                : null),
+      gia_san_pham: json['gia_san_pham'] != null
+          ? double.tryParse(json['gia_san_pham'].toString()) ?? 0.0
+          : 0.0,
 
-      sizes_model: json['size_san_pham'] != null
-          ? List<ProductSizeModel>.from(
-              json['size_san_pham'].map((x) => ProductSizeModel.fromJson(x)),
-            )
+      sizes: json['sizes'] != null
+          ? (json['sizes'] as List)
+                .map((item) => ProductSizeModel.fromJson(item))
+                .toList()
           : [],
     );
   }

@@ -1,22 +1,22 @@
 //ĐÂY LÀ TRANG CHỦ CỦA ỨNG DỤNG
 
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:flutter/gestures.dart';
+
+import 'category_screens/product_by_category.dart';
+import 'brand_screens/product_by_brand.dart';
 
 import '../widgets/slider.dart';
 import '../widgets/category.dart';
 import '../widgets/brand.dart';
-import '../widgets/product_card.dart';
+import '../widgets/product_by_brand_section.dart';
 
-class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-    PointerDeviceKind.touch,
-    PointerDeviceKind.mouse, // Kích hoạt kéo cuộn bằng chuột
-    PointerDeviceKind.trackpad,
-  };
-}
+import '../services/product_service.dart';
+import '../services/category_service.dart';
+import '../services/brand_service.dart';
+
+import '../models/product_model.dart';
+import '../models/category_model.dart';
+import '../models/brand_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,10 +26,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late Future<List<CategoryModel>> _categories;
+  late Future<List<BrandModel>> _brands;
+
+  @override
+  void initState() {
+    super.initState();
+    _categories = CategoryService.getCategories();
+    _brands = BrandService.getBrands();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
@@ -41,61 +50,173 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Container(child: ImageSlider()),
               Container(
-                child: Column(
-                  children: [
-                    Category(
-                      ten_danh_muc: 'Giày bóng đá sân cỏ tự nhiên',
-                      anh_danh_muc:
-                          'https://www.voetbalshop.nl/media/blog/post/972/20240503-Voetbalschoenen-tekst-breedte-Ondergrond-FG-1.jpg',
-                      onTap: () {},
-                      onLongPress: () {},
-                    ),
-                    Category(
-                      ten_danh_muc: 'Giày bóng đá sân cỏ nhân tạo',
-                      anh_danh_muc:
-                          'https://www.voetbalshop.nl/media/blog/post/972/20240503-Voetbalschoenen-tekst-breedte-Ondergrond-TF-1.jpg',
-                      onTap: () {},
-                      onLongPress: () {},
-                    ),
-                  ],
-                ),
-              ),
-              Container(
+                width: double.infinity,
+                height: 500,
+                padding: EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(10),
+                    Center(
                       child: Text(
-                        'Thương hiệu',
+                        'DANH MỤC',
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
+                    Divider(
+                      color: Colors.grey, // Màu sắc đường kẻ
+                      thickness: 1.5, // Độ dày của đường kẻ
+                      indent: 80, // Khoảng trống cách lề trái
+                      endIndent: 80, // Khoảng trống cách lề phải
+                    ),
+                    FutureBuilder<List<CategoryModel>>(
+                      future: _categories,
+                      builder: (context, snapshot) {
+                        // Trạng thái đang tải API
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(
+                            height: 600,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.lightGreenAccent.shade400,
+                              ),
+                            ),
+                          );
+                        }
+                        // Trạng thái bị lỗi
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Lỗi tải danh mục: ${snapshot.error}'),
+                          );
+                        }
+                        final listCategory = snapshot.data ?? [];
+                        if (listCategory.isEmpty) {
+                          return const Center(
+                            child: Text('Chưa có danh mục nào'),
+                          );
+                        }
+                        return SizedBox(
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(width: 10),
+                            itemCount: listCategory.length,
+                            itemBuilder: (context, index) {
+                              final c = listCategory[index];
+                              return Category(
+                                ten_danh_muc: c.ten_danh_muc,
+                                anh_danh_muc: c.anh_danh_muc,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductByCategory(
+                                        ma_danh_muc: c.ma_danh_muc,
+                                        ten_danh_muc: c.ten_danh_muc,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                onLongPress: () {},
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                height: 500,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Container(
-                      color: Colors.grey[200],
-                      child: GridView.builder(
-                        // Giới hạn lưới vừa đủ theo kích thước của các phần tử bên trong
-                        shrinkWrap: true,
-                        // Chặn cuộn riêng của GridView nếu nó nằm trong một SingleChildScrollView
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, // Hiển thị 2 cột như trong ảnh
-                          mainAxisSpacing: 1.0, // Khoảng cách giữa các hàng
-                          crossAxisSpacing: 1.0, // Khoảng cách giữa các cột
-                          childAspectRatio:
-                              1.0, // Tỷ lệ khung hình (1.0 nghĩa là ô vuông)
+                      padding: EdgeInsets.all(10),
+                      child: Center(
+                        child: Text(
+                          'THƯƠNG HIỆU',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return Brand(
-                            anh_thuong_hieu:
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDuijr8bBrpnUWJ7dQhTxKOARJiTZIix8A0O3IABPVOnmW3QidAfIP1VEF&s=10',
-                            ten_thuong_hieu: 'Nike',
-                            onTap: () {},
-                            onLongPress: () {},
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.grey, // Màu sắc đường kẻ
+                      thickness: 1.5, // Độ dày của đường kẻ
+                      indent: 80, // Khoảng trống cách lề trái
+                      endIndent: 80, // Khoảng trống cách lề phải
+                    ),
+                    Container(
+                      child: FutureBuilder<List<BrandModel>>(
+                        future: _brands,
+                        builder: (context, snapshot) {
+                          // Trạng thái đang tải API
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return SizedBox(
+                              height: 600,
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          }
+                          // Trạng thái bị lỗi
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text(
+                                'Lỗi tải thương hiệu: ${snapshot.error}',
+                              ),
+                            );
+                          }
+                          final listBrand = snapshot.data ?? [];
+                          if (listBrand.isEmpty) {
+                            return const Center(
+                              child: Text('Chưa có thương hiệu'),
+                            );
+                          }
+                          return SizedBox(
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount:
+                                        2, // Hiển thị 2 cột như trong ảnh
+                                    mainAxisSpacing:
+                                        1.0, // Khoảng cách giữa các hàng
+                                    crossAxisSpacing:
+                                        1.0, // Khoảng cách giữa các cột
+                                    childAspectRatio:
+                                        1.0, // Tỷ lệ khung hình (1.0 nghĩa là ô vuông)
+                                  ),
+                              itemCount: listBrand.length,
+                              itemBuilder: (context, index) {
+                                final b = listBrand[index];
+                                return Brand(
+                                  anh_thuong_hieu: b.anh_thuong_hieu,
+                                  ten_thuong_hieu: b.ten_thuong_hieu,
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProductByBrand(
+                                          ma_thuong_hieu: b.ma_thuong_hieu,
+                                          ten_thuong_hieu: b.ten_thuong_hieu,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  onLongPress: () {},
+                                );
+                              },
+                            ),
                           );
                         },
                       ),
@@ -104,146 +225,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 30.0),
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Nike',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 350,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        separatorBuilder: (_, __) => const SizedBox(width: 10),
-                        itemBuilder: (context, index) {
-                          return ProductCard(
-                            ten_san_pham: 'Nike Tiempo Ligera Pro FG',
-                            anh_san_pham:
-                                'https://thumblr.uniid.it/product/462700/e4d5c6fd4e11.jpg?width=1920&format=webp&q=75',
-                            gia_san_pham: '120',
-                            ma_danh_muc: 'Giày bóng đá sân cỏ tự nhiên',
-                            onTap: () {},
-                            onLongPress: () {},
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    'CÁC SẢN PHẨM NỔI BẬT',
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 30.0),
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Adidas',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 350,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        separatorBuilder: (_, __) => const SizedBox(width: 10),
-                        itemBuilder: (context, index) {
-                          return ProductCard(
-                            ten_san_pham:
-                                'Adidas Predator Elite FG Immortal DNA',
-                            anh_san_pham:
-                                'https://thumblr.uniid.it/product/431213/a1d613ea9d00.jpg?width=1920&format=webp&q=75',
-                            gia_san_pham: '200',
-                            ma_danh_muc: 'Giày bóng đá sân cỏ tự nhiên',
-                            onTap: () {},
-                            onLongPress: () {},
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+              Divider(
+                color: Colors.grey, // Màu sắc đường kẻ
+                thickness: 1.5, // Độ dày của đường kẻ
+                indent: 80, // Khoảng trống cách lề trái
+                endIndent: 80, // Khoảng trống cách lề phải
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 30.0),
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Mizuno',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 350,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        separatorBuilder: (_, __) => const SizedBox(width: 10),
-                        itemBuilder: (context, index) {
-                          return ProductCard(
-                            ten_san_pham: 'Mizuno Morelia II Elite FG',
-                            anh_san_pham:
-                                'https://thumblr.uniid.it/product/436811/bff0e891506e.jpg?width=1920&format=webp&q=75',
-                            gia_san_pham: '180',
-                            ma_danh_muc: 'Giày bóng đá sân cỏ tự nhiên',
-                            onTap: () {},
-                            onLongPress: () {},
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 30.0),
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Puma',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 350,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        separatorBuilder: (_, __) => const SizedBox(width: 10),
-                        itemBuilder: (context, index) {
-                          return ProductCard(
-                            ten_san_pham: 'PUMA Future 9 Ultimate FG Eclipse',
-                            anh_san_pham:
-                                'https://thumblr.uniid.it/product/434170/1384a44a1220.jpg?width=1920&format=webp&q=75',
-                            gia_san_pham: '200',
-                            ma_danh_muc: 'Giày bóng đá sân cỏ tự nhiên',
-                            onTap: () {},
-                            onLongPress: () {},
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              ProductByBrandSection(id: 1, ten_thuong_hieu: 'Nike'),
+              ProductByBrandSection(id: 2, ten_thuong_hieu: 'Adidas'),
+              ProductByBrandSection(id: 3, ten_thuong_hieu: 'Puma'),
+              ProductByBrandSection(id: 4, ten_thuong_hieu: 'Mizuno'),
             ],
           ),
         ),

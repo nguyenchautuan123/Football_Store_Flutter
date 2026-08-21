@@ -2,20 +2,29 @@
 
 import 'package:flutter/material.dart';
 import '../widgets/shoe_size_picker.dart';
+import '../models/product_model.dart';
+import '../models/product_size_model.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({super.key});
+  final ProductModel product;
+
+  const ProductDetailScreen({super.key, required this.product});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  ProductSizeModel? _selectedSize;
+  int _selectedSizeQuantity = 1;
+
   @override
   Widget build(BuildContext context) {
+    final product = widget.product;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Detail"),
+        title: Text(product.ten_san_pham ?? ''),
         backgroundColor: Colors.lightGreenAccent.shade400,
       ),
       body: Container(
@@ -23,20 +32,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           children: [
             Container(
               child: Image.network(
-                'https://thumblr.uniid.it/product/462700/e4d5c6fd4e11.jpg?width=1920&format=webp&q=75',
+                product.anh_san_pham ?? '',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => const SizedBox(
+                  height: 250,
+                  child: Center(child: Icon(Icons.broken_image, size: 80)),
+                ),
               ),
             ),
             Container(
               padding: EdgeInsets.all(10),
               child: Text(
-                'Nike Tiempo Ligera Pro FG',
+                product.ten_san_pham ?? 'nill',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
               ),
             ),
             Container(
               padding: EdgeInsets.all(10),
               child: Text(
-                'Giày bóng đá sân cỏ tự nhiên',
+                'Thương hiệu: ${product.thuong_hieu?.ten_thuong_hieu ?? 'null'}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                product.danh_muc?.ten_danh_muc ?? 'null',
                 style: TextStyle(fontSize: 18),
               ),
             ),
@@ -45,11 +66,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: Row(
                 children: [
                   Icon(Icons.attach_money),
-                  Text('120', style: TextStyle(fontSize: 18)),
+                  Text(
+                    product.gia_san_pham.toString(),
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ],
               ),
             ),
-            Container(padding: EdgeInsets.all(10), child: ShoeSizePicker()),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: ShoeSizePicker(
+                sizes: product.sizes ?? [],
+                onChanged: (selectedSize, quantity) {
+                  setState(() {
+                    _selectedSize = selectedSize;
+                    _selectedSizeQuantity = quantity;
+                  });
+                },
+              ),
+            ),
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(10),
@@ -99,7 +134,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                   Text(
-                    'Approved by global superstars including Estêvão, Jamal Musiala and Phil FodenBuilt for the mad dribblers, the players who see no defence as too tight, no challenge as too big and no move as too risky, the all-	new Tiempo becomes their ultimate weapon of precision, control and fearlessnessThe buttery soft Techleather upper fits perfectly to your foot like a glove-like fit, offering 17% more coverage than previous 	models for a smoother, more cohesive feel, while being lighter, softer and absorbing 29% less water than natural leather for 	consistent touch and comfort in all conditionsTapered studs provide optimum traction while improving support and durabilityWith a classic adaptive lacing systemThis is a football boot with FG studs for use on natural grass pitches.',
+                    (product.mo_ta_san_pham != null &&
+                            product.mo_ta_san_pham!.isNotEmpty)
+                        ? product.mo_ta_san_pham!
+                        : 'No description',
                   ),
                 ],
               ),
