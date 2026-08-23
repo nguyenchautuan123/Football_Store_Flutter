@@ -99,4 +99,39 @@ class ProductService {
       throw Exception('Lỗi kết nối API: $error');
     }
   }
+
+  static Future<List<ProductModel>> searchProductsByKeyword(
+    String keyword,
+  ) async {
+    if (keyword.trim().isEmpty) return [];
+    final String encodedKeyword = Uri.encodeComponent(keyword.trim());
+    final Uri url = Uri.parse('$api_url/api/search?keyword=$encodedKeyword');
+
+    try {
+      final response = await http
+          .get(
+            url,
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'User-Agent': 'FlutterApp/1.0',
+            },
+          )
+          .timeout(Duration(seconds: 120));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> body = jsonDecode(response.body);
+        final List<dynamic> data = body['data'] ?? [];
+
+        return data.map((json) => ProductModel.fromJson(json)).toList();
+      } else if (response.statusCode == 500) {
+        await Future.delayed(const Duration(seconds: 15));
+        return searchProductsByKeyword(keyword);
+      } else {
+        throw Exception('Lỗi Server: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Lỗi kết nối API: $error');
+    }
+  }
 }

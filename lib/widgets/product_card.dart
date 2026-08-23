@@ -27,7 +27,7 @@ class ProductCard extends StatelessWidget {
       onLongPress: onLongPress,
       child: Container(
         width: 180,
-        height: 300,
+        // height: 400,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Colors.grey[200],
